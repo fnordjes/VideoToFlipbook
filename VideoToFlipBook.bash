@@ -10,8 +10,8 @@ DIN A4 is used as the paper format. Print resolution is set to $RESOLUTION dpi.
 
 Usage: $0 [-h] FILE [-i <IN>] [-o <OUT>] [-f <FRAMERATE>]
     -h, --help    Show this help message and exit
-    -i, --in      Time of the video to start with (defaults to 00:00:00 and must
-                  be given in that format: \"hh:mm:ss\")
+    -i, --in      Time of the video to start with (defaults to 00:00:00 and can
+                  be given in format \"hh:mm:ss\" or as seconds only)
     -t, --time    Duration of the video to convert (defaults to ten seconds)
     -f, --fps     Number of frames to capture per second (defaults to 5)
 "
@@ -118,6 +118,8 @@ convert "$OUTPUT/montage_*.png" -resize 2480x3506 -units PixelsPerInch -density 
 
 
 # cleanup behind us
-rm $FILES
-rmdir "$OUTPUT"
+# -- Commented because this allows for a simple improvement/hack
+
+#rm $FILES
+#rmdir "$OUTPUT"
 
