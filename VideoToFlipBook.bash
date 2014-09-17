@@ -118,12 +118,19 @@ for file in $FILES
 do
     convert $file -gravity east -extent 200x100% "$file.extended"
     convert "$file.extended" -gravity west -annotate 90x90+10+0 '%f' "$file.annotated"
+
+    # Enable on demand:
+    # Create four copies of the file -> each sheet of paper will have the same picture
+    # four times. The whole printout can than easily be cut into four flipbooks
+    #cp "$file.annotated" "$file.annotated"a
+    #cp "$file.annotated" "$file.annotated"b
+    #cp "$file.annotated" "$file.annotated"c
 done
 
 #
 # Combine the annotated pictures (four pictures on a sheet of paper)
 #
-montage "$OUTPUT/*.annotated" -tile 1x4  -geometry +20+20 "$OUTPUT/montage_%d.png"
+montage "$OUTPUT/*.annotated*" -tile 1x4  -geometry +20+20 "$OUTPUT/montage_%d.png"
 
 # 'Print' the montages to a sheet of DIN A4 paper (resolution is hard coded here.
 # see http://en.wikipedia.org/wiki/ISO_216#A.2C_B.2C_C_comparison for adaption
