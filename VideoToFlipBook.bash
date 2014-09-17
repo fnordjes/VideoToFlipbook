@@ -1,6 +1,20 @@
 #!/bin/bash
 
-REQUIRED="avconv convert montage"
+platform='unknown'
+unamestr=`uname`
+if [[ "$unamestr" == 'Linux' ]]; then
+    # ubuntu no longer has ffmpeg in the repo
+    REQUIRED="avconv convert montage"
+    SNAPSHOT_TOOL="avconv"
+elif [[ "$unamestr" == 'Darwin' ]]; then
+    # 'port' on mac osx only has ffmpeg
+    REQUIRED="ffmpeg convert montage"
+    SNAPSHOT_TOOL="ffmpeg"
+else
+    echo "Unsupported plattform. Aborting."
+    exit 1
+fi
+
 RESOLUTION=300
 
 usage() {
@@ -93,7 +107,7 @@ mkdir $OUTPUT
 #
 
 echo "Taking snapshots..."
-avconv -i $VIDEO -ss $IN -t $TIME -r $FPS ${OUTPUT}/snapshot_%04d.png
+$SNAPSHOT_TOOL -i $VIDEO -ss $IN -t $TIME -r $FPS ${OUTPUT}/snapshot_%04d.png
 
 #
 # Add 100% margin and file name on the left side to allow binding and reassembling
