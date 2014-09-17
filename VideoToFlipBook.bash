@@ -132,8 +132,7 @@ convert "$OUTPUT/montage_*.png" -resize 2480x3506 -units PixelsPerInch -density 
 
 
 # cleanup behind us
-# -- Commented because this allows for a simple improvement/hack
 
-#rm $FILES
-#rmdir "$OUTPUT"
+rm $FILES
+rmdir "$OUTPUT"
 
