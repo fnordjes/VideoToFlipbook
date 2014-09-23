@@ -46,9 +46,12 @@ tools_exist() {
 
 # Exit if no file name is given...
 [[ $# -eq 0 ]] && usage
- 
+
+if [ "$1" == "-h" ] || [ "$1" == "--help" ];
+then
+    usage
 # ...or if it is not a file...
-if ( ! file_exits "$1" )
+elif ( ! file_exits "$1" )
 then
     echo "File \"$1\" not found. Exiting."
     exit 1
