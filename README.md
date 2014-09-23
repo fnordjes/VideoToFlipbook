@@ -14,7 +14,7 @@ $ ./VideoToFlipBook.bash
 Create printable document to tinker a flipbook. Requires avconv convert montage.
 DIN A4 is used as the paper format. Print resolution is set to 300 dpi.
 
-Usage: ./VideoToFlipBook.bash [-h] FILE [-i <IN>] [-o <OUT>] [-f <FRAMERATE>]
+Usage: ./VideoToFlipBook.bash [-h] FILE [-i <IN>] [-t <TIME>] [-f <FRAMERATE>]
     -h, --help    Show this help message and exit
     -i, --in      Time of the video to start with (defaults to 00:00:00 and can
                   be given in format "hh:mm:ss" or as seconds only)
