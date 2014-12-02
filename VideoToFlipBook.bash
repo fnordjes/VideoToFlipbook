@@ -121,6 +121,7 @@ FILES="$OUTPUT/*"
 #
 # Create gif preview
 #
+echo "Creating preview..."
 convert -resize 320x240 -delay 20 -loop 0 $FILES $(basename $VIDEO)_flipbook.gif
 
 for file in $FILES
