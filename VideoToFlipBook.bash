@@ -117,6 +117,12 @@ $SNAPSHOT_TOOL -i $VIDEO -ss $IN -t $TIME -r $FPS ${OUTPUT}/snapshot_%04d.png
 # 
 #
 FILES="$OUTPUT/*"
+ 
+#
+# Create gif preview
+#
+convert -resize 320x240 -delay 20 -loop 0 $FILES $(basename $VIDEO)_flipbook.gif
+
 for file in $FILES
 do
     convert $file -gravity east -extent 200x100% "$file.extended"
@@ -143,6 +149,6 @@ convert "$OUTPUT/montage_*.png" -resize 2480x3506 -units PixelsPerInch -density 
 
 # cleanup behind us
 
-rm $FILES
-rmdir "$OUTPUT"
+#rm $FILES
+#rmdir "$OUTPUT"
 
