@@ -113,43 +113,54 @@ echo "Taking snapshots..."
 $SNAPSHOT_TOOL -i $VIDEO -ss $IN -t $TIME -r $FPS ${OUTPUT}/snapshot_%04d.png
 
 #
-# Add 100% margin and file name on the left side to allow binding and reassembling
-# 
+# Add 100% margin and file name on the left side 
+# to allow binding and reassembling
 #
 FILES="$OUTPUT/*"
  
 #
 # Create gif preview
 #
-echo "Creating preview..."
+echo "Creating gif preview: $(basename $VIDEO)_flipbook.gif"
 convert -resize 320x240 -delay 20 -loop 0 $FILES $(basename $VIDEO)_flipbook.gif
 
+echo "Extending and annotating pictures..."
 for file in $FILES
 do
-    convert $file -gravity east -extent 200x100% "$file.extended"
-    convert "$file.extended" -gravity west -annotate 90x90+10+0 '%f' "$file.annotated"
-
-    # Enable on demand:
-    # Create four copies of the file -> each sheet of paper will have the same picture
-    # four times. The whole printout can than easily be cut into four flipbooks
-    #cp "$file.annotated" "$file.annotated"a
-    #cp "$file.annotated" "$file.annotated"b
-    #cp "$file.annotated" "$file.annotated"c
+    mogrify -gravity east -extent 200x100% $file 
+    mogrify -gravity west -annotate 90x90+10+0 '%f' -pointsize 16 $file
+    
+    # Enable on demand: create four copies of each picture.
+    # The resulting pdf will have the same file four time
+    # on each page. Bind and cut the book to get four flipbooks.
+    #cp $file "$file"_d
+    #cp $file "$file"_c
+    #cp $file "$file"_b
+    #mv $file "$file"_a
 done
 
 #
 # Combine the annotated pictures (four pictures on a sheet of paper)
 #
-montage "$OUTPUT/*.annotated*" -tile 1x4  -geometry +20+20 "$OUTPUT/montage_%d.png"
+echo "Combining pictures to pages..."
+
+# This call to montage should duplicate each file four times but it didn't 
+# work for me. Therefore the pictures are copied as needed (see above).
+#montage "$OUTPUT/*.*" -duplicate 4,0-`\ls $OUTPUT/*.png -afq | wc -l` -tile 1x4  -geometry +75+75 "$OUTPUT/montage_%d.png"
+
+# This takes very long and uses huge amounts of ram!
+montage "$OUTPUT/*.*" -tile 1x4  -geometry +75+75 "$OUTPUT/montage_%d.png"
+
 
 # 'Print' the montages to a sheet of DIN A4 paper (resolution is hard coded here.
 # see http://en.wikipedia.org/wiki/ISO_216#A.2C_B.2C_C_comparison for adaption
 # to other formats)
+echo "Printing pages to pdf..."
 convert "$OUTPUT/montage_*.png" -resize 2480x3506 -units PixelsPerInch -density "$RESOLUTION"x"$RESOLUTION" $(basename $VIDEO)_flipbook.pdf
 
 
 # cleanup behind us
-
-#rm $FILES
-#rmdir "$OUTPUT"
+echo "Deleting intermediate pictures..."
+rm $FILES
+rmdir "$OUTPUT"
 

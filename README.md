@@ -37,6 +37,6 @@ Lessons learned after the first attempt
 To Do
 =====
 
-* Create a preview of the flipbook as animated gif.
+* Create a preview of the flipbook as animated gif. (Done December 2014)
 * Make the size configureable.
 * ...
